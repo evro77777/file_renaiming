@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import *
 class MyGUI(QMainWindow):
 
     def __init__(self):
-        super().__init__()
+        super(MyGUI, self).__init__()
         uic.loadUi('bulkgui.ui', self)
         self.show()
         print(self.selectView)
@@ -73,12 +73,13 @@ class MyGUI(QMainWindow):
             elif self.removePrefixRadio.isChecked():
                 if filename.startswith(self.nameEdit.text()):
                     os.rename(os.path.join(self.directory, filename),
-                              os.path.join(self.directory, self.filename[self.nameEdit.text():]))
+                              os.path.join(self.directory, filename[len(self.nameEdit.text()):]))
             elif self.addSuffixRadio.isChecked():
                 filetype = filename.split('.')[-1]
+                l = len(filename) - len(filetype) - 1
                 os.rename(os.path.join(self.directory, filename),
                           os.path.join(self.directory,
-                                       filename + self.nameEdit.text() + '.' + filetype))
+                                       filename[:l] + self.nameEdit.text() + '.' + filetype))
             elif self.removeSuffixRadio.isChecked():
                 filetype = filename.split('.')[-1]
                 if filename.endswith(self.nameEdit.text() + '.' + filetype):
